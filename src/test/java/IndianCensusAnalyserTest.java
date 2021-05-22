@@ -6,7 +6,9 @@ import java.io.IOException;
 public class IndianCensusAnalyserTest {
 
     public static String IndianCensusCSV = "C:\\Users\\bhush\\IdeaProjects\\IndianCensusAnalyser\\src\\main\\resources\\IndiaStateCensusData.csv";
-    public static String IncorrectPath = "IndiaStateCensusData.csv";
+    public static String IncorrectPath = "C:\\Users\\bhush\\IdeaProjects\\IndianCensusAnalyser\\src\\test\\resources\\IndiaStateCensusData.csv";
+    public static String IndianCensus = "C:\\Users\\bhush\\IdeaProjects\\IndianCensusAnalyser\\src\\main\\resources\\IndiaStateCensusData";
+
 
     @Test
     void givenCSVFile_CheckIfTheNumberOfEntriesMatches() throws CustomException, IOException {
@@ -16,8 +18,14 @@ public class IndianCensusAnalyserTest {
     }
 
     @Test
-    void givenValue_ShouldThrowCustomException() {
+    void givenIncorrectPath_ShouldThrowCustomException() {
         IndianCensusAnalyser indianCensusAnalyser = new IndianCensusAnalyser();
         Assertions.assertThrows(CustomException.class, () -> { indianCensusAnalyser.getCount(IncorrectPath); } );
+    }
+
+    @Test
+    void givenIncorrectFileName_ShouldThrowCustomException() {
+        IndianCensusAnalyser indianCensusAnalyser = new IndianCensusAnalyser();
+        Assertions.assertThrows(CustomException.class, () -> { indianCensusAnalyser.getCount(IndianCensus); } );
     }
 }

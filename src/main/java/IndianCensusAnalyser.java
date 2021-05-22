@@ -5,13 +5,13 @@ import java.nio.file.Paths;
 
 public class IndianCensusAnalyser {
 
-    public long getCount(String filepath) throws CustomException, IOException {
+    public long getCount(String filepath) throws CustomException {
         long entries;
         Path path = Paths.get(filepath);
-        if(!path.isAbsolute()) {
+        try {
+                entries = Files.lines(path).count();
+        } catch (IOException e) {
             throw new CustomException("The File Path is Not Correct!!");
-        } else {
-            entries = Files.lines(path).count();
         }
         System.out.println("The number of Records in the File is: " + entries);
         return entries;
