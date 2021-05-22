@@ -4,17 +4,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class IndianCensusAnalyser {
-    public long getCount(String filepath) {
-        long entries = 0;
+
+    public long getCount(String filepath) throws CustomException, IOException {
+        long entries;
         Path path = Paths.get(filepath);
-        try {
-            if(path.isAbsolute()) {
-                entries = Files.lines(path).count();
-            } else {
-                throw new CustomException("The File Path is Not Correct!!");
-            }
-        } catch (CustomException | IOException e) {
-            e.printStackTrace();
+        if(!path.isAbsolute()) {
+            throw new CustomException("The File Path is Not Correct!!");
+        } else {
+            entries = Files.lines(path).count();
         }
         System.out.println("The number of Records in the File is: " + entries);
         return entries;
