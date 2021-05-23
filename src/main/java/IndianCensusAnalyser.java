@@ -19,6 +19,24 @@ public class IndianCensusAnalyser {
             return (int) StreamSupport.stream(censusCSVIterable.spliterator(), false).count();
         } catch (IOException exception) {
             throw new CustomException(exception.getMessage(), CustomException.ExceptionType.CENSUS_FILE_PROBLEM);
+        } catch (RuntimeException exception) {
+            throw new CustomException(exception.getMessage(), CustomException.ExceptionType.WRONG_FILE_DELIMITER);
+        }
+    }
+
+    public static int loadWrongCensusData(String filePathCSV) throws CustomException {
+        if (!filePathCSV.contains(".csv"))
+            throw new CustomException("This is invalid file type", CustomException.ExceptionType.WRONG_FILE_TYPE);
+        try (Reader reader = Files.newBufferedReader(Paths.get(filePathCSV))) {
+            CsvToBean<IndiaCensusCSV> csvToBean = new CsvToBeanBuilder<IndiaCensusCSV>(reader)
+                    .withType(IndiaCensusCSV.class)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+            Iterator<IndiaCensusCSV> indiaCensusCSVIterator = csvToBean.iterator();
+            Iterable<IndiaCensusCSV> censusCSVIterable = () -> indiaCensusCSVIterator;
+            return (int) StreamSupport.stream(censusCSVIterable.spliterator(), false).count();
+        } catch (IOException exception) {
+            throw new CustomException(exception.getMessage(), CustomException.ExceptionType.CENSUS_FILE_PROBLEM);
         }
     }
 
