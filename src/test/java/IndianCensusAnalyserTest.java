@@ -1,31 +1,38 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 public class IndianCensusAnalyserTest {
-
-    public static String IndianCensusCSV = "C:\\Users\\bhush\\IdeaProjects\\IndianCensusAnalyser\\src\\main\\resources\\IndiaStateCensusData.csv";
-    public static String IncorrectPath = "C:\\Users\\bhush\\IdeaProjects\\IndianCensusAnalyser\\src\\test\\resources\\IndiaStateCensusData.csv";
-    public static String IndianCensus = "C:\\Users\\bhush\\IdeaProjects\\IndianCensusAnalyser\\src\\main\\resources\\IndiaStateCensusData";
-
+    public static final String censusCSV = "src\\main\\resources\\IndianStateCensusData.csv";
+    public static final String stateCodeCSV = "src\\main\\resources\\IndiaStateCode.csv";
+    public static final String wrongCSV = "src\\main\\resources\\IndiaStateCode";
 
     @Test
-    void givenCSVFile_CheckIfTheNumberOfEntriesMatches() throws CustomException, IOException {
-        IndianCensusAnalyser indianCensusAnalyser = new IndianCensusAnalyser();
-        long result = indianCensusAnalyser.getCount(IndianCensusCSV);
-        Assertions.assertEquals(30, result);
+    public void GivenTheStateCodesCsvFile_IfHasCorrectNumberOfRecords_ShouldReturnTrue() {
+        try {
+            int count = IndianCensusAnalyser.loadCensusData(censusCSV);
+            Assertions.assertEquals(29, count);
+        } catch (CustomException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    void givenIncorrectPath_ShouldThrowCustomException() {
-        IndianCensusAnalyser indianCensusAnalyser = new IndianCensusAnalyser();
-        Assertions.assertThrows(CustomException.class, () -> { indianCensusAnalyser.getCount(IncorrectPath); } );
+    public void givenIndianStateCodeCSVFile_ReturnsCorrectRecords() {
+        try {
+            int count = IndianCensusAnalyser.loadCodeData(stateCodeCSV);
+            System.out.println(count);
+            Assertions.assertEquals(37, count);
+        } catch (CustomException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    void givenIncorrectFileName_ShouldThrowCustomException() {
-        IndianCensusAnalyser indianCensusAnalyser = new IndianCensusAnalyser();
-        Assertions.assertThrows(CustomException.class, () -> { indianCensusAnalyser.getCount(IndianCensus); } );
+    public void givenIndiaStateCensusFile_WithIncorrectFile_ShouldThrowException() {
+        try {
+            IndianCensusAnalyser.loadCensusData(wrongCSV);
+        } catch (CustomException e) {
+            Assertions.assertEquals(CustomException.ExceptionType.CENSUS_FILE_PROBLEM,e.type);
+        }
     }
 }

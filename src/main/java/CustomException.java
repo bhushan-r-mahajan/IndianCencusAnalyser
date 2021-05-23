@@ -1,5 +1,13 @@
 public class CustomException extends Exception {
-    public CustomException(String message) {
+
+    public ExceptionType type;
+
+    public CustomException(String message, ExceptionType type) {
         super(message);
+        this.type = type;
+    }
+
+    public enum ExceptionType {
+        CENSUS_FILE_PROBLEM
     }
 }
