@@ -7,7 +7,6 @@ public class IndianCensusAnalyserTest {
     public static final String wrongCSV = "src\\main\\resources\\IndiaStateCode";
     public static final String wrongFileType = "src\\main\\resources\\IndiaStateCensusData.txt";
     public static final String wrongDelimiter = "src\\main\\resources\\IndiaStateCensusDataDelimiter.csv";
-    public static final String wrongHeader = "src\\main\\resources\\IndiaStateCensusDataHeader.csv";
 
     @Test
     public void givenTheStateCodesCsvFile_IfHasCorrectNumberOfRecords_ShouldReturnTrue() {
@@ -53,16 +52,6 @@ public class IndianCensusAnalyserTest {
     public void givenIndiaCensusData_WithWrongFileDelimiter_ShouldThrowException() {
         try {
             IndianCensusAnalyser.loadCensusData(wrongDelimiter);
-        } catch (CustomException e) {
-            System.out.println(e.type);
-            Assertions.assertEquals(CustomException.ExceptionType.WRONG_FILE_CONTENT,e.type);
-        }
-    }
-
-    @Test
-    public void givenIndiaCensusData_WithWrongFileHeader_ShouldThrowException() {
-        try {
-            IndianCensusAnalyser.loadCensusData(wrongHeader);
         } catch (CustomException e) {
             System.out.println(e.type);
             Assertions.assertEquals(CustomException.ExceptionType.WRONG_FILE_CONTENT,e.type);
