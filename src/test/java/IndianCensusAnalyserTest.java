@@ -7,6 +7,7 @@ public class IndianCensusAnalyserTest {
     public static final String wrongCSV = "src\\main\\resources\\IndiaStateCode";
     public static final String wrongFileType = "src\\main\\resources\\IndiaStateCensusData.txt";
     public static final String wrongDelimiter = "src\\main\\resources\\IndiaStateCensusDataDelimiter.csv";
+    public static final String wrongHeader = "src\\main\\resources\\IndiaStateCensusDataHeader.csv";
 
     @Test
     public void givenTheStateCodesCsvFile_IfHasCorrectNumberOfRecords_ShouldReturnTrue() {
@@ -22,7 +23,6 @@ public class IndianCensusAnalyserTest {
     public void givenIndianStateCodeCSVFile_ReturnsCorrectRecords_PassesTheTest() {
         try {
             int count = IndianCensusAnalyser.loadCodeData(stateCodeCSV);
-            System.out.println(count);
             Assertions.assertEquals(37, count);
         } catch (CustomException e) {
             e.printStackTrace();
@@ -30,11 +30,12 @@ public class IndianCensusAnalyserTest {
     }
 
     @Test
-    public void givenIndiaStateCensusFile_WithNoExtention_ShouldThrowCustomException() {
+    public void givenIndiaStateCensusFile_WithNoCSV_ShouldThrowCustomException() {
         try {
             IndianCensusAnalyser.loadCensusData(wrongCSV);
         } catch (CustomException e) {
-            Assertions.assertEquals(CustomException.ExceptionType.CENSUS_FILE_PROBLEM,e.type);
+            System.out.println(e.type);
+            Assertions.assertEquals(CustomException.ExceptionType.NO_EXTENTION_FOUND,e.type);
         }
     }
 
@@ -54,7 +55,17 @@ public class IndianCensusAnalyserTest {
             IndianCensusAnalyser.loadCensusData(wrongDelimiter);
         } catch (CustomException e) {
             System.out.println(e.type);
-            Assertions.assertEquals(CustomException.ExceptionType.WRONG_FILE_DELIMITER,e.type);
+            Assertions.assertEquals(CustomException.ExceptionType.WRONG_FILE_CONTENT,e.type);
+        }
+    }
+
+    @Test
+    public void givenIndiaCensusData_WithWrongFileHeader_ShouldThrowException() {
+        try {
+            IndianCensusAnalyser.loadCensusData(wrongHeader);
+        } catch (CustomException e) {
+            System.out.println(e.type);
+            Assertions.assertEquals(CustomException.ExceptionType.WRONG_FILE_CONTENT,e.type);
         }
     }
 }

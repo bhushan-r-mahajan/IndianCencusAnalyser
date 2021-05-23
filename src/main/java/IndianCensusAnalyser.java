@@ -1,5 +1,6 @@
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -17,10 +18,10 @@ public class IndianCensusAnalyser {
             Iterator<IndiaCensusCSV> indiaCensusCSVIterator = csvToBean.iterator();
             Iterable<IndiaCensusCSV> censusCSVIterable = () -> indiaCensusCSVIterator;
             return (int) StreamSupport.stream(censusCSVIterable.spliterator(), false).count();
-        } catch (IOException exception) {
-            throw new CustomException(exception.getMessage(), CustomException.ExceptionType.CENSUS_FILE_PROBLEM);
-        } catch (RuntimeException exception) {
-            throw new CustomException(exception.getMessage(), CustomException.ExceptionType.WRONG_FILE_DELIMITER);
+        } catch (IOException e) {
+            throw new CustomException(e.getMessage(), CustomException.ExceptionType.NO_EXTENTION_FOUND);
+        } catch (RuntimeException e) {
+            throw new CustomException(e.getMessage(), CustomException.ExceptionType.WRONG_FILE_CONTENT);
         }
     }
 
@@ -35,8 +36,8 @@ public class IndianCensusAnalyser {
             Iterator<IndiaCensusCSV> indiaCensusCSVIterator = csvToBean.iterator();
             Iterable<IndiaCensusCSV> censusCSVIterable = () -> indiaCensusCSVIterator;
             return (int) StreamSupport.stream(censusCSVIterable.spliterator(), false).count();
-        } catch (IOException exception) {
-            throw new CustomException(exception.getMessage(), CustomException.ExceptionType.CENSUS_FILE_PROBLEM);
+        } catch (IOException e) {
+            throw new CustomException(e.getMessage(), CustomException.ExceptionType.NO_EXTENTION_FOUND);
         }
     }
 
@@ -49,8 +50,8 @@ public class IndianCensusAnalyser {
             Iterator<IndiaStateCodeCSV> indiaStateCodeCSVIterator = csvToBean.iterator();
             Iterable<IndiaStateCodeCSV> censusCSVIterable = () -> indiaStateCodeCSVIterator;
             return (int) StreamSupport.stream(censusCSVIterable.spliterator(), false).count();
-        } catch (Exception exception) {
-            throw new CustomException(exception.getMessage(), CustomException.ExceptionType.CENSUS_FILE_PROBLEM);
+        } catch (Exception e) {
+            throw new CustomException(e.getMessage(), CustomException.ExceptionType.NO_EXTENTION_FOUND);
         }
     }
 }
